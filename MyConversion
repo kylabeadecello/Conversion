@@ -1,0 +1,58 @@
+public class MyConversion{
+    public String toBinary(int num){
+        String binary = " ";
+        while(num>0){
+            int remainder = num % 2;
+            binary = remainder + binary;
+            num = num / 2;
+        }
+        return binary;
+    }
+
+    public String toOctal(int num){
+        String octal = " ";
+        while(num>0){
+            int remainder = num % 8;
+            octal = remainder + octal;
+            num = num / 8;
+        }
+        return octal;
+    }
+    
+    public String toHexadecimal(int num){
+        String hexadecimal = " ";
+
+        do{
+        int remainder = num % 16;
+        if (remainder >= 0 && remainder <= 9){
+            hexadecimal = remainder + hexadecimal;
+        } else {
+            switch (remainder){
+                case 10:
+                    hexadecimal = "A" + hexadecimal;
+                    break;
+                case 11:
+                    hexadecimal = "B" + hexadecimal;
+                    break;
+                case 12:
+                    hexadecimal = "C" + hexadecimal;
+                    break;
+                case 13:
+                    hexadecimal = "D" + hexadecimal;
+                    break;
+                case 14:
+                    hexadecimal = "E" + hexadecimal;
+                    break;
+                case 15:
+                    hexadecimal = "F" + hexadecimal;
+                    break;
+            }
+        }
+        num = num / 16;
+    }
+    while(num > 0);
+
+    return hexadecimal;
+}
+
+}
