@@ -1,0 +1,14 @@
+import java.util.*;
+public class Conversion{
+
+    public static void main (String [] args){
+        Scanner input = new Scanner (System.in);
+        System.out.print("Enter a number ");
+        int num = input.nextInt();
+        MyConversion n = new MyConversion();
+        System.out.print(n.toBinary(num));
+        System.out.print(n.toOctal(num));
+        System.out.print(n.toHexadecimal(num));
+    }
+    
+}
