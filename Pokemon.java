@@ -1,0 +1,165 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package pokemongame;
+
+/**
+ *
+ * @author Acer
+ */
+import java.util.Random;
+import java.util.Scanner;
+
+class Pokemon {
+    private String name;
+    private String type;
+    private int health;
+    private int baseAttack;
+
+    public Pokemon(String name, String type) {
+        this.name = name;
+        this.type = type;
+        this.health = 100;
+        this.baseAttack = 20;
+    }
+
+    public void train() {
+        Random random = new Random();
+        // Perform training
+        this.baseAttack += 5;
+        this.health -= 3;
+    }
+
+    public void rest() {
+        this.health += 2;
+    }
+
+    public void displayStats() {
+        System.out.println("Pokemon: " + name);
+        System.out.println("Type: " + type);
+        System.out.println("Health: " + health);
+        System.out.println("Base Attack: " + baseAttack);
+    }
+
+    public void enterBattle() {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int enemyHealth = 110;
+
+        System.out.println("\n------------------------------------------------------------------");
+        System.out.println("\tYOU ARE NOW IN A POKEMON BATTLE");
+        while (health > 0 && enemyHealth > 0) {
+            System.out.println("\nAVAILABLE MOVES:");
+            System.out.println("1.Normal Attack");
+
+            if (type.equals("Fairy")) {
+                System.out.println("2.Spirit Break");
+                System.out.println("3.Moonblast!");
+            } else if (type.equals("Poison")) {
+                System.out.println("2.Purify");
+                System.out.println("3.Baneful Bunker!   ");
+            } else if (type.equals("Ghost")) {
+                System.out.println("2.Night Shade");
+                System.out.println("3.Stone Edge");
+            }
+
+            System.out.println("4.Quit Battle");
+
+            int go = scanner.nextInt();
+
+            switch (go) {
+                case 1:
+                    int enemyDamage = random.nextInt(15) + 1; // Random damage between 1 and 10
+                    this.health -= enemyDamage;
+                    System.out.println(name + " attacked the enemy! Enemy's damage: " + enemyDamage);
+                    System.out.println(" ");
+                    // Enemy retaliates
+                    int playerDamage = random.nextInt(20) + 1; // Player's attack power
+                    enemyHealth -= playerDamage;
+                    System.out.println("The enemy attacked you! Your Pokemon's damage: " + playerDamage);
+
+                    if (enemyHealth <= 0) {
+                        System.out.println("\n------------------------------------------------------------------");
+                    }
+                    break;
+                    
+                case 2:
+                    if (type.equals("Fairy")) {
+                        int healthGain = 5;
+                        this.health += healthGain;
+                        System.out.println(name + " used Spirit Break. Health Gained: " + healthGain);
+                        
+                    } else if (type.equals("Poison")) {
+                        int stealHealth = random.nextInt(5) + 1; // Random health between 1 and 5
+                        int enemyDecrease = random.nextInt(5) + 1;
+                        this.health += stealHealth;
+                        enemyHealth -= enemyDecrease;
+                        System.out.println(name + " used Purify it stole " + stealHealth + " amount of health from the enemy.");
+                        System.out.println("Enemy's health decreased by " + enemyDecrease + ".");
+                        
+                    } else if (type.equals("Ghost")) {
+                        int regainedHealth = random.nextInt(5) + 1; // Random health between 1 and 5
+                        this.health += regainedHealth;
+                        System.out.println(name + " used Night Shade, it regained " + regainedHealth + " amount of health.");
+                    }
+                    break;
+                    
+                case 3:
+                    int moveDamage = 0; // Initialize move damage
+                    int playerHealthDecrease = 0; // Initialize player's health decrease
+
+                    if (type.equals("Fairy")) {
+                        moveDamage = 27;
+                        playerHealthDecrease = 23;
+                    } else if (type.equals("Poison")) {
+                        moveDamage = 13;
+                        playerHealthDecrease = 11;
+                    } else if (type.equals("Ghost")) {
+                        moveDamage = 31;
+                        playerHealthDecrease = 24;
+                    }
+
+                    enemyHealth -= moveDamage;
+                    System.out.println(name + " attacks the enemy: enemy's health decreased by " + moveDamage + ".");
+    
+                    this.health -= playerHealthDecrease;
+                    System.out.println(name + "'s health decreases by " + playerHealthDecrease + ".");
+
+                    if (enemyHealth <= 0) {
+                        System.out.println("\n------------------------------------------------------------------");
+                        break; // Exit the loop if the enemy is defeated
+                    }
+
+                    System.out.print("Do you want to risk this move again? (Y for yes / Other key for no): ");
+                    String moveAgain = scanner.next().toLowerCase();
+                    if (!moveAgain.equals("y")) {
+                        break; // Exit the loop if the user chooses not to use the move again
+                    }
+
+                    break;
+
+                case 4:
+                    System.out.println("You quit the battle.");
+                    return;
+                default:
+                    System.out.println("Invalid move. Please choose a valid move.");
+                    break;
+                }
+
+                // Display current health
+                System.out.println(name + "'s health: " + this.health);
+                System.out.println("Enemy's health: " + enemyHealth);
+                
+                // Check if player's Pokemon is defeated
+                if (this.health <= 0) {
+                System.out.println("\n------------------------------------------------------------------");
+                System.out.println(name + "'s health reached 0. Sorry, you lost the battle. Better luck next time!");
+                }
+             }
+
+            if (enemyHealth <= 0 && this.health > 0) {
+            System.out.println("\t\nCongratulations, " + type + " Pokemon:" + name + " you defeated the enemy!");
+        }
+    }
+}
