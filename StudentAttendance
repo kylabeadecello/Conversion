@@ -1,0 +1,243 @@
+package studentattendance;
+import java.util.*;
+
+class Student {
+    private String id;
+    private String name;
+
+    public Student(String name) {
+        this.id = generateRandomID();
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String generateRandomID() {
+        Random random = new Random();
+        int randomValue = random.nextInt(0x1000000);
+        return String.format("%06XH", randomValue);
+    }
+}
+
+class StudentInfo extends Student {
+    private double gwa;
+    private String course;
+
+    public StudentInfo(String name, double gwa, String course) {
+        super(name);
+        this.gwa = gwa;
+        this.course = course;
+    }
+
+    public double getGWA() {
+        return gwa;
+    }
+
+    public void setGWA(double gwa) {
+        this.gwa = gwa;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+}
+
+public class StudentAttendance {
+    private static final int MAX_STUDENTS = 10;
+    private static StudentInfo[] students = new StudentInfo[MAX_STUDENTS];
+    private static int studentCount = 0;
+    private static Set<String> studentNames = new HashSet<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String choice;
+
+        System.out.println("Hello User! Welcome to Student Attendance Information");
+
+        while (true) {
+            System.out.println("\nPlease enter the letter of your desired action: ");
+            System.out.println("a. Add Student");
+            System.out.println("b. Edit Student");
+            System.out.println("c. View Students");
+            System.out.println("d. Delete Student");
+            System.out.println("e. Exit");
+
+            choice = scanner.nextLine().toLowerCase();
+
+            if (choice.equals("a")) {
+                addStudent(scanner);
+            } else if (choice.equals("b")) {
+                editStudent(scanner);
+            } else if (choice.equals("c")) {
+                viewStudents();
+            } else if (choice.equals("d")) {
+                deleteStudent(scanner);
+            } else if (choice.equals("e")) {
+                System.out.println("\nThank You. Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private static void addStudent(Scanner scanner) {
+        if (studentCount < MAX_STUDENTS) {
+            System.out.print("\nEnter student name: ");
+            String name = scanner.nextLine();
+
+            if (!studentNames.contains(name)) {
+                studentNames.add(name);
+                students[studentCount] = new StudentInfo(name, 0, "");
+                studentCount++;
+                System.out.println("***A student was added***");
+            } else {
+                System.out.println("Invalid, this student was already added, please enter another student name");
+            }
+            System.out.println(" ");
+        } else {
+            System.out.println("Maximum number of students reached.");
+        }
+    }
+
+    private static void editStudent(Scanner scanner) {
+        System.out.println("\n\t  STUDENT LIST:");
+
+        if (studentCount == 0) {
+            System.out.println("No students added yet. Add a student first.");
+            return;
+        }
+
+        for (int i = 0; i < studentCount; i++) {
+            System.out.println((char)('a' + i) + ". " + students[i].getName());
+        }
+
+        System.out.print("\nEnter the letter of the student you wish to edit: ");
+
+        String selection;
+
+        while (true) {
+            selection = scanner.nextLine().toLowerCase();
+
+            if (selection.length() == 1 && selection.charAt(0) >= 'a' && selection.charAt(0) < 'a' + studentCount) {
+                break;
+            } else {
+                System.out.println("Invalid selection. Please try again.");
+            }
+        }
+
+        int index = selection.charAt(0) - 'a';
+        StudentInfo student = students[index];
+
+        System.out.println("\n***Currently Editing " + student.getName() + "***");
+        System.out.print("Enter new name: ");
+        String newName = scanner.nextLine();
+        student.setName(newName);
+
+        System.out.print("Enter new GWA: ");
+
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Invalid input. Please enter a valid number.");
+            System.out.print("Enter new GWA: ");
+            scanner.next();
+        }
+
+        double newGWA = scanner.nextDouble();
+        scanner.nextLine();
+        student.setGWA(newGWA);
+
+        System.out.print("Enter new course: ");
+        String newCourse = scanner.nextLine();
+        student.setCourse(newCourse);
+        System.out.println("\nSuccess! Student information updated.");
+        System.out.println(" ");
+    }
+
+    private static void viewStudents() {
+        if (studentCount == 0) {
+            System.out.println("No students added yet.");
+        } else {
+            System.out.println("\n\t   STUDENT LIST:");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            for (int i = 0; i < studentCount; i++) {
+                StudentInfo student = students[i];
+
+                System.out.println("\tStudent Number: " + student.getId());
+                System.out.println("\nName of Student: " + student.getName());
+                System.out.println("GWA of Student: " + student.getGWA());
+                System.out.println("Course of Student: " + student.getCourse());
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
+        }
+        System.out.println();
+    }
+
+    private static void deleteStudent(Scanner scanner) {
+        if (studentCount == 0) {
+            System.out.println("No student/s to delete. Add a student first.");
+            return;
+        }
+
+        System.out.println("\n\t  STUDENT LIST:");
+
+        for (int i = 0; i < studentCount; i++) {
+            System.out.println((char)('a' + i) + ". " + students[i].getName());
+        }
+
+        System.out.print("Enter the letter of the student you wish to delete: ");
+
+        String selection;
+
+        while (true) {
+            selection = scanner.nextLine().toLowerCase();
+
+            if (selection.length() == 1 && selection.charAt(0) >= 'a' && selection.charAt(0) < 'a' + studentCount) {
+                break;
+            } else {
+                System.out.println("Invalid selection. Please try again.");
+            }
+        }
+
+        int index = selection.charAt(0) - 'a';
+        StudentInfo student = students[index];
+        String studentName = student.getName();
+
+        System.out.print("\nAre you sure you want to delete " + studentName + "? (Y for Yes and N for No): ");
+        String choice = scanner.nextLine().toUpperCase();
+
+        switch (choice) {
+            case "Y":
+                for (int i = index; i < studentCount - 1; i++) {
+                    students[i] = students[i + 1];
+                }
+
+                studentCount--;
+                studentNames.remove(studentName);
+                System.out.println("***" + studentName + " has been deleted***");
+                System.out.println(" ");
+                break;
+            case "N":
+                System.out.println(studentName + " was not deleted. You may continue.");
+                System.out.println(" ");
+                break;
+            default:
+                System.out.println("Invalid choice. Please enter 'Y' for Yes or 'N' for No.");
+                System.out.println(" ");
+            }
+        }
+    }
