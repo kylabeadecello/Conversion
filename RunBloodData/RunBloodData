@@ -1,0 +1,39 @@
+import java.util.Scanner;
+
+public class RunBloodData {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        BloodData bloodData = new BloodData();
+        String data;
+
+        while (true) {
+            System.out.print("Enter Blood Type of Patient (or 'X' to exit): ");
+            String BT = scanner.nextLine().toUpperCase();
+
+            if (BT.equals("X")) {
+                break;
+            }
+
+            System.out.print("Enter the Rhesus Factor (+ or -):  ");
+            String RF = scanner.nextLine().toUpperCase();
+
+            data = BT + RF;
+
+            if (isValidBloodData(data)) {
+                bloodData.setBloodType(BT);
+                bloodData.setRhFactor(RF);
+                System.out.println("\n" + bloodData.getBloodType() + bloodData.getRhFactor() + " is added to the Blood Bank.");
+                System.out.println(" ");
+            } else {
+                System.out.println("Invalid blood data! Please enter a valid blood type and rhesus factor combination.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    public static boolean isValidBloodData(String data) {
+        return data.equals("A+") || data.equals("A-") || data.equals("B+") || data.equals("B-") ||
+               data.equals("AB+") || data.equals("AB-") || data.equals("O+") || data.equals("O-");
+    }
+}
