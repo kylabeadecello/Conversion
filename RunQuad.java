@@ -53,41 +53,41 @@ public class RunQuad {
         char choice;
 
         do {
-            System.out.println("\nPress R for Rectangle, S for Square, P for Parallelogram, H for Rhombus, T for Trapezoid, or Q to quit:");
+            System.out.println("\nSelect from the following:");
+            System.out.println("R - Rectangle");
+            System.out.println("S - Square");
+            System.out.println("P - Parallelogram");
+            System.out.println("H - Rhombus");
+            System.out.println("T - Trapezoid");
+            System.out.println("Q - quit:");
+            System.out.println(" ");
             choice = scanner.next().charAt(0);
 
             Quadrilateral selectedShape;
 
-            switch (choice) {
-                case 'R':
-                case 'r':
-                    selectedShape = new Rectangle();
-                    break;
-                case 'S':
-                case 's':
-                    selectedShape = new Square();
-                    break;
-                case 'P':
-                case 'p':
-                    selectedShape = new Parallelogram();
-                    break;
-                case 'H':
-                case 'h':
-                    selectedShape = new Rhombus();
-                    break;
-                case 'T':
-                case 't':
-                    selectedShape = new Trapezoid();
-                    break;
-                case 'Q':
-                case 'q':
-                    System.out.println("Exiting program. Goodbye!");
-                    scanner.close();
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please choose R, S, P, H, T, or Q.");
-                    continue;
-            }
+            if (choice == 'R' || choice == 'r') {
+                        System.out.println("A rectangle:");
+                        selectedShape = new Rectangle();
+                    } else if (choice == 'S' || choice == 's') {
+                        System.out.println("A square:");
+                        selectedShape = new Square();
+                    } else if (choice == 'P' || choice == 'p') {
+                        System.out.println("A parallelogram:");
+                        selectedShape = new Parallelogram();
+                    } else if (choice == 'H' || choice == 'h') {
+                        System.out.println("A rhombus:");
+                        selectedShape = new Rhombus();
+                    } else if (choice == 'T' || choice == 't') {
+                        System.out.println("A trapezoid:");
+                        selectedShape = new Trapezoid();
+                    } else if (choice == 'Q' || choice == 'q') {
+                        System.out.println("Exiting program. Goodbye!");
+                        scanner.close();
+                        return;
+                    } else {
+                        System.out.println("Invalid choice. Please choose R, S, P, H, T, or Q.");
+                        continue;
+                    }
 
             selectedShape.showDescription();
 
