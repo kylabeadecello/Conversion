@@ -1,0 +1,24 @@
+package main;
+
+public class Exam {
+    private String message;
+    
+    public Exam() {
+        message = "Good luck";
+    }
+
+    public Exam(String period, String level) {
+        // Code for the overloaded constructor
+    }
+
+    public double getPrice() {
+        // Code to return the value of price
+        return 0.0; // Replace with the actual implementation
+    }
+
+    public boolean isFinished() {
+        // Code to return the value of status
+        return false; // Replace with the actual implementation
+    }
+}
+
